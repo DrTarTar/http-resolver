@@ -68,10 +68,43 @@ codes = {
     "511": {"name": "Network Authentication Required", "description": "Client must authenticate to gain network access."}
 }
 
+
+
 import sys
-curr_code=sys.argv[1]
-entry=codes.get(curr_code)
+import time
+if len(sys.argv) < 2:
+    print("Usage: http-resolver.py <code> | -l | --listrange <start> <end>")
+    sys.exit()
+arg = sys.argv[1]
+if arg == "-l":
+    for code, entry in sorted(codes.items()):
+        print(f"{code} {entry['name']}: {entry['description']}")
+        time.sleep(0.001)
+    sys.exit()
+elif arg == "--help":
+    print("Usage:")
+    print("  http-resolver.py <code>")
+    print("  http-resolver.py -l")
+    print("  http-resolver.py --listrange <start> <end>")
+    sys.exit()
+elif arg == "--listrange":
+    if len(sys.argv) < 4:
+        print("Please provide start and end range.")
+        sys.exit()
+    try:
+        start = int(sys.argv[2])
+        end = int(sys.argv[3])
+    except ValueError:
+        print("Range values must be integers.")
+        sys.exit()
+    for code, entry in sorted(codes.items()):
+        code_int = int(code)
+        if start <= code_int <= end:
+            print(f"{code} {entry['name']}: {entry['description']}")
+            time.sleep(0.001)
+    sys.exit()
+entry = codes.get(arg)
 if entry:
-	print(f"{curr_code} {entry['name']}: {entry['description']}")
+    print(f"{arg} {entry['name']}: {entry['description']}")
 else:
     print("Unknown status code.")
