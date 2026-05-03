@@ -70,4 +70,8 @@ codes = {
 
 import sys
 curr_code=sys.argv[1]
-print(codes.get(curr_code, "Status Code Unknown."))
+entry=codes.get(curr_code)
+if entry:
+	print(f"{curr_code} {entry['name']}: {entry['description']}")
+else:
+    print("Unknown status code.")
